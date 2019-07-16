@@ -1,0 +1,289 @@
+-- tables
+-- Table: Child
+CREATE TABLE Child (
+    Child_ID integer  NOT NULL,
+    CName varchar2(20)  NOT NULL,
+    CSurname varchar2(20)  NOT NULL,
+    Contact integer  NOT NULL,
+    CONSTRAINT Child_pk PRIMARY KEY (Child_ID)
+) ;
+
+-- Table: Contract
+CREATE TABLE Contract (
+    Contract_ID integer  NOT NULL,
+    Employee_ID integer  NOT NULL,
+    Wage integer  NOT NULL,
+    Contract_Date date  NOT NULL,
+    CONSTRAINT Contract_pk PRIMARY KEY (Contract_ID)
+) ;
+
+-- Table: Employee
+CREATE TABLE Employee (
+    Employee_ID integer  NOT NULL,
+    EName varchar2(20)  NOT NULL,
+    ESurname varchar2(20)  NOT NULL,
+    EPhone integer  NOT NULL,
+    CONSTRAINT Employee_ID PRIMARY KEY (Employee_ID)
+) ;
+
+-- Table: Event
+CREATE TABLE Event (
+    Event_ID integer  NOT NULL,
+    Booking_ID integer  NOT NULL,
+    Employee_ID integer  NOT NULL,
+    CONSTRAINT Event_pk PRIMARY KEY (Event_ID)
+) ;
+
+-- Table: Location
+CREATE TABLE Location (
+    Location_ID integer  NOT NULL,
+    LAddress varchar2(50)  NOT NULL,
+    CONSTRAINT Location_pk PRIMARY KEY (Location_ID)
+) ;
+
+-- Table: Booking
+CREATE TABLE Booking (
+    Booking_ID integer  NOT NULL,
+    Child_ID integer  NOT NULL,
+    Occasion varchar2(20)  NOT NULL,
+    Location_ID integer  NOT NULL,
+    Party_Date date  NOT NULL,
+    Guests_number integer  NOT NULL,
+    Start_time date  NOT NULL,
+    End_time date  NOT NULL,
+    CONSTRAINT Booking_pk PRIMARY KEY (Booking_ID)
+) ;
+
+-- Table: Schedule
+CREATE TABLE Schedule (
+    Schedule_ID integer  NOT NULL,
+    Schedule_Date date,
+    Employee_ID integer  NOT NULL,
+    Start_hour date  NOT NULL,
+    Finish_hour date  NOT NULL,
+    CONSTRAINT Schedule_pk PRIMARY KEY (Schedule_ID)
+) ;
+
+-- foreign keys
+-- Reference: Child_Booking (table: Booking)
+ALTER TABLE Booking ADD CONSTRAINT Child_Booking
+    FOREIGN KEY (Child_ID)
+    REFERENCES Child (Child_ID);
+
+-- Reference: Employee_Contract (table: Contract)
+ALTER TABLE Contract ADD CONSTRAINT Employee_Contract
+    FOREIGN KEY (Employee_ID)
+    REFERENCES Employee (Employee_ID);
+
+-- Reference: Employee_Event (table: Event)
+ALTER TABLE Event ADD CONSTRAINT Employee_Event
+    FOREIGN KEY (Employee_ID)
+    REFERENCES Employee (Employee_ID);
+
+-- Reference: Employee_Schedule (table: Schedule)
+ALTER TABLE Schedule ADD CONSTRAINT Employee_Schedule
+    FOREIGN KEY (Employee_ID)
+    REFERENCES Employee (Employee_ID);
+
+-- Reference: Booking_Event (table: Event)
+ALTER TABLE Event ADD CONSTRAINT Booking_Event
+    FOREIGN KEY (Booking_ID)
+    REFERENCES Booking (Booking_ID);
+
+-- Reference: Booking_Location (table: Booking)
+ALTER TABLE Booking ADD CONSTRAINT Booking_Location
+    FOREIGN KEY (Location_ID)
+    REFERENCES Location (Location_ID);
+
+ALTER SESSION 
+SET NLS_DATE_FORMAT = 'DD-MON-YYYY HH24:MI:SS';
+
+insert into location(location_id, laddress)
+values (1,'Aleje Jerozolimskie 120');
+insert into location(location_id, laddress)
+values (2,'Aleje Jerozolimskie 25');
+insert into location(location_id, laddress)
+values (3,'Nowy Swiat 5');
+insert into location(location_id, laddress)
+values (4,'Koszykowa 83');
+insert into location(location_id, laddress)
+values (5,'Aleje Jerozolimskie 220');
+
+insert into child(child_id,cname,csurname,contact)
+values(1,'Bob','Smith',111222333);
+insert into child(child_id,cname,csurname,contact)
+values(2,'Stan','Smith',221222333);
+insert into child(child_id,cname,csurname,contact)
+values(3,'Elen','Degeneres',331222333);
+insert into child(child_id,cname,csurname,contact)
+values(4,'James','Gordon',441222333);
+insert into child(child_id,cname,csurname,contact)
+values(5,'Jimmy','Fallon',551222333);
+
+insert into employee(employee_id,ename,esurname,ephone)
+values(1,'Brad','Pitt',444999222);
+insert into employee(employee_id,ename,esurname,ephone)
+values(2,'Bruno','Mars',944999222);
+insert into employee(employee_id,ename,esurname,ephone)
+values(3,'Drake','Miscott',844999222);
+insert into employee(employee_id,ename,esurname,ephone)
+values(4,'Sebastian','Rots',144999222);
+insert into employee(employee_id,ename,esurname,ephone)
+values(5,'Rob','Soret',424999222);
+
+insert into contract(contract_id,employee_id,wage,contract_date)
+values (1,1,30,'10-MAR-2018');
+insert into contract(contract_id,employee_id,wage,contract_date)
+values (2,2,12,'10-JUN-2018');
+insert into contract(contract_id,employee_id,wage,contract_date)
+values (3,3,90,'19-MAY-2015');
+insert into contract(contract_id,employee_id,wage,contract_date)
+values (4,4,12,'18-JAN-2019');
+insert into contract(contract_id,employee_id,wage,contract_date)
+values (5,5,20,'10-MAR-2017');
+
+insert into schedule(schedule_id,schedule_date,employee_id,start_hour,finish_hour)
+values (1,'23-MAY-2019',1,'23-MAY-2019 13:00:00','23-MAY-2019 21:00:00'); 
+insert into schedule(schedule_id,schedule_date,employee_id,start_hour,finish_hour)
+values (2,'23-MAY-2019',2,'23-MAY-2019 12:00:00','23-MAY-2019 18:00:00'); 
+insert into schedule(schedule_id,schedule_date,employee_id,start_hour,finish_hour)
+values (3,'23-MAY-2019',3,'23-MAY-2019 15:00:00','23-MAY-2019 23:00:00'); 
+insert into schedule(schedule_id,schedule_date,employee_id,start_hour,finish_hour)
+values (4,'23-MAY-2019',4,'23-MAY-2019 15:00:00','23-MAY-2019 23:00:00'); 
+insert into schedule(schedule_id,schedule_date,employee_id,start_hour,finish_hour)
+values (5,'23-MAY-2019',5,'23-MAY-2019 12:00:00','23-MAY-2019 20:00:00'); 
+
+insert into booking(booking_id,child_id,occasion,location_id,party_date,guests_number,start_time,end_time)
+values (1,1,'Nameday',1,'23-MAY-2019',59,'23-MAY-2019 16:00:00','23-MAY-2019 21:00:00');
+insert into booking(booking_id,child_id,occasion,location_id,party_date,guests_number,start_time,end_time)
+values (2,2,'Birthday',3,'23-MAY-2019',19,'23-MAY-2019 18:00:00','23-MAY-2019 23:00:00');
+insert into booking(booking_id,child_id,occasion,location_id,party_date,guests_number,start_time,end_time)
+values (3,3,'Baptism',4,'21-MAY-2019',20,'21-MAY-2019 17:00:00','21-MAY-2019 23:00:00');
+insert into booking(booking_id,child_id,occasion,location_id,party_date,guests_number,start_time,end_time)
+values (4,4,'Birthday',2,'20-MAR-2019',30,'20-MAR-2019 16:00:00','20-MAR-2019 22:00:00');
+insert into booking(booking_id,child_id,occasion,location_id,party_date,guests_number,start_time,end_time)
+values (5,5,'Nameday',2,'23-JAN-2019',100,'23-JAN-2019 14:00:00','23-JAN-2019 22:00:00');
+
+insert into event(event_id, booking_id, employee_id)
+values (1,1,1);
+insert into event(event_id, booking_id, employee_id)
+values (2,2,1);
+insert into event(event_id, booking_id, employee_id)
+values (3,3,3);
+insert into event(event_id, booking_id, employee_id)
+values (4,4,3);
+insert into event(event_id, booking_id, employee_id)
+values (5,5,5);
+------------------
+--2 SELECT STATEMENTS THAT INCLUDE AT LEAST TWO TABLES AND CONTAIN WHERE CLAUSE
+--Show parties for kids with surname smith of fallon with occasion and time and location of the party
+SELECT child.cname as child_name, child.csurname as child_surname, booking.occasion as occassion , booking.start_time as date , location.laddress as address
+FROM child,booking, location
+where child.child_ID=booking.Child_ID
+and  location.location_id=booking.location_id
+and csurname in ('Smith','Fallon')
+ORDER BY booking.start_time ASC;
+
+--show location and hour of party for employees besides Brand and besides employees with 4 letter surnames containing tt sort by address ascending.  
+SELECT employee.ename as Employee, location.laddress as Location ,booking.start_time as Date
+from employee, event, booking, location
+where employee.employee_id=event.employee_id 
+and event.booking_id=booking.booking_id 
+and booking.location_id = location.location_id
+and ename<>'Brad'
+and esurname like '___'
+and esurname not like '%tt%'
+order by laddress ASC;
+
+--2 SELECT STATEMETNS WITH CORRELATED FUNCTIONS 
+--Calculate average wage per hour for employees hired in 2019 and then in 2018
+select avg(contract.wage)as AverageWage,count(employee.employee_id) as NoEmployees
+from employee, contract where employee.employee_id=contract.employee_id
+and contract.contract_date between '01-JAN-2019' and '01-JAN-2020'
+union
+select avg(contract.wage)as AverageWage2019,count(employee.employee_id) as NoEmployees
+from employee, contract where employee.employee_id=contract.employee_id
+and contract.contract_date between '01-JAN-2018' and '01-JAN-2019';
+
+--count number of employees earning minimal vage or maximal wage 
+select count(*)
+from employee , contract
+where employee.employee_id=contract.employee_id 
+and contract.wage = (select min(wage) from contract)
+or contract.wage=(select max(wage) from contract); 
+
+
+--1 SELECT STATEMENT WITH CORRELATED SUBQUERY 
+--NEW 
+--show occasion and pary date for booking happening in aleje jerozolimskie 120
+SELECT a.occasion,a.party_date
+FROM booking a
+WHERE a.location_id=(
+SELECT b.location_id
+FROM location b WHERE a.laddres='Aleje Jerozolimskie 120');
+
+--2 AFTER TRIGGERS 
+--NEW
+--INSERT/UPDATE TABLE when wage is bigger than 20 raise appliction error
+Set ServerOutput On
+create or replace trigger TriggerHudb
+after insert or update
+on contract 
+for each row 
+begin 
+case when :new.wage>20 
+then 
+raise_application_error(-20020,'Thats too much to earn!'); 
+end case; 
+end;
+/ 
+find events with max(guests number) happening in certain location
+insert into contract(contract_id, employee_id, wage,contract_date)
+values (6,5,200, '12-MAR-2019');
+update contract set wage=100 where contract_id=2;
+
+--DELETE - TABLE say bye bye to employee withh id=5, because we ust fired him
+Set ServerOutput On
+create or replace trigger TriggerC
+after delete
+on contract declare y varchar2(20);
+begin select ename into y from employee where employee_id=5;
+DBMS_output.put_line('You will be missed, '||y||'');
+end;
+/
+insert into contract(contract_id,employee_id,wage,contract_date)
+values (5,5,20,'10-MAR-2017');
+DELETE FROM contract WHERE contract_id=5;
+
+----------------------TWO BEFORE TRIGGERS
+--DELETE when somebody deletes location warn that there might be some parties there
+Set ServerOutput On
+create or replace trigger TriggerL
+before delete
+on location 
+for each row
+begin
+DBMS_output.put_line('There might be some parties happening in this location!');
+end;
+/
+
+DELETE FROM location WHERE location_id=5;
+insert into location(location_id, laddress)
+values (5,'Aleje Jerozolimskie 220');
+
+
+--INSERT/UPDATE FOR EACH ROW When party_date is 23 mar 2019 it says that we are not working on this day
+Set ServerOutput On
+create or replace trigger TriggerH
+before insert or update 
+on booking
+for each row
+begin 
+select party_date from booking where party_date='23-MAR-2019';
+DBMS_output.put_line('Looks like we are not working on this day :/');
+end;
+/
+insert into booking(booking_id,child_id,occasion,location_id,party_date,guests_number,start_time,end_time)
+values (6,3,'Nameday',2,'23-MAR-2019',100,'23-JAN-2019 14:00:00','23-JAN-2019 22:00:00');
+update booking set party_date='23-MAR-2019' where booking_id=1;
+_____
