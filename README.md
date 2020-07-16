@@ -1,3 +1,2 @@
-# SQL
-2019, PJATK, Relacje baz danych
-DDL and DML instructions 
+# Relacje bez danych - DDL & DML 
+Datbase created for a company orginising parties for children
